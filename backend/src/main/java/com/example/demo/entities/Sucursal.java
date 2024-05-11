@@ -26,7 +26,5 @@ public class Sucursal {
     @Column(name = "nombre")
     private char nombre;
 
-    @OneToMany(mappedBy = "sucursal")
-    private List<Factura> facturas;
 
 }

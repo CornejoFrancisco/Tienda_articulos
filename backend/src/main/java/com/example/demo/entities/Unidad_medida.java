@@ -25,7 +25,6 @@ public class Unidad_medida {
     @Column(name = "nombre")
     private String nombre;
 
-    @OneToMany(mappedBy = "articulo")
-    private List<Articulo> articulos;
+
 
 }
