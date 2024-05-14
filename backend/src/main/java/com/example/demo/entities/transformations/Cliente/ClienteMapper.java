@@ -22,7 +22,7 @@ public class ClienteMapper implements Function<ClienteDto, Cliente> {
                 clienteDto.getDomicilio(),
                 clienteDto.getSexo(),
                 clienteDto.getFecha_nacimiento(),
-                usuarioRepository.getReferenceById(clienteDto.getUsuario())
+                usuarioRepository.getReferenceById(clienteDto.getUsuario().getUsuario())
         );
     }
 }

@@ -14,7 +14,8 @@ public class DetalleFacutaMapper implements Function<DetalleFacturaDto, Detallef
         return new Detallefactura(
                 detalleFacturaDto.getId_detalle(),
                 detalleFacturaDto.getFactura(),
-                detalleFacturaDto.getCantidad()
+                detalleFacturaDto.getCantidad(),
+                detalleFacturaDto.getArticulo()
         );
     }
 
