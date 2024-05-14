@@ -25,6 +25,4 @@ public class Categoria {
     @Column(name = "nombre")
     private String nombre;
 
-    @OneToMany(mappedBy = "categoria")
-    private List<Articulo> articulos;
 }

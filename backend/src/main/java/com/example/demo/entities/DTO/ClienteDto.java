@@ -2,6 +2,7 @@ package com.example.demo.entities.DTO;
 
 
 
+import com.example.demo.entities.Cliente;
 import com.example.demo.entities.Usuario;
 import jakarta.persistence.Column;
 import jakarta.persistence.OneToOne;
@@ -21,6 +22,6 @@ public class ClienteDto {
     private String domicilio;
     private String sexo;
     private Date fecha_nacimiento;
-    private Long usuario;
+    private Usuario usuario;
 
 }

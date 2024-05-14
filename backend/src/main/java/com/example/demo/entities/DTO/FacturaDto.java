@@ -23,11 +23,11 @@ public class FacturaDto {
 
     private int numero;
 
-    private Long formaPago;
+    private Forma_pago formaPago;
 
     private Date fecha;
     private int total;
-    private List<Long> detalles;
+    private List<Detallefactura> detalles;
 
-    private Long sucursal;
+    private Sucursal sucursal;
 }

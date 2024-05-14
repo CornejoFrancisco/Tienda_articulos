@@ -19,6 +19,4 @@ public class Forma_pagoDto {
 
     private String nombre;
 
-    private List<Long> facturas;
-
 }

@@ -18,5 +18,4 @@ public class CategoriaDto {
     private Long id_categoria;
 
     private String nombre;
-    private List<Long> articulos;
 }

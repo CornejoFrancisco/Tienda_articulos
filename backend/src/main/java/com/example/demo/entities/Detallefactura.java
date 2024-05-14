@@ -20,9 +20,8 @@ public class Detallefactura {
     @Column(name = "id_detalle")
     private Long id_detalle;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "id_factura")
-    private Factura factura;
+    @Column(name = "factura")
+    private Long factura;
 
     @Column(name = "cantidad")
     private int cantidad;

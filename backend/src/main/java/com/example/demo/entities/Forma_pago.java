@@ -24,7 +24,4 @@ public class Forma_pago {
     @Column(name = "nombre")
     private String nombre;
 
-    @OneToMany(mappedBy = "factura")
-    private List<Factura> facturas;
-
 }

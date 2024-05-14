@@ -23,7 +23,7 @@ public class Articulo {
     @Column(name = "nombre")
     private String nombre;
     @Column(name = "precio")
-    private String precio;
+    private int precio;
 
     @ManyToOne
     @JoinColumn(name = "id_categoria")
@@ -32,6 +32,5 @@ public class Articulo {
     @ManyToOne
     @JoinColumn(name = "id_unidad_medida")
     private Unidad_medida unidad_medida;
-
 
 }

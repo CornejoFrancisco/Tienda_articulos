@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class ArticuloDto {
     private Long id_articulo;
     private String nombre;
-    private String precio;
+    private int precio;
     private Long categoria;
     private Long unidad_medida;
 }
