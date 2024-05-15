@@ -1,33 +1,55 @@
 package com.example.demo.services.implementations;
 
 import com.example.demo.entities.DTO.SucursalDto;
+import com.example.demo.entities.Factura;
+import com.example.demo.entities.Sucursal;
+import com.example.demo.entities.transformations.Sucursal.SucursalDtoMapper;
+import com.example.demo.repositories.SucursalRespository;
 import com.example.demo.services.Interfaces.SucursalService;
 
 import java.util.List;
+import java.util.Optional;
 
 public class SucursalServiceImpl implements SucursalService {
+
+    private SucursalRespository sucursalRespository;
+    private SucursalDtoMapper sucursalDtoMapper;
+
+    public SucursalServiceImpl(SucursalRespository sucursalRespository, SucursalDtoMapper sucursalDtoMapper) {
+        this.sucursalRespository = sucursalRespository;
+        this.sucursalDtoMapper = sucursalDtoMapper;
+    }
+
     @Override
     public void add(SucursalDto entity) {
-
+        Sucursal sucursal = new Sucursal();
+        sucursal.setNombre(entity.getNombre());
+        sucursalRespository.save(sucursal);
     }
 
     @Override
     public SucursalDto getById(Long id) {
-        return null;
+        Optional<Sucursal> sucursal = sucursalRespository.findById(id);
+        return sucursal.map(sucursalDtoMapper)
+                .orElseThrow();
     }
 
     @Override
     public List<SucursalDto> getAll() {
-        return null;
+        List<Sucursal> sucursal = sucursalRespository.findAll();
+        return sucursal.stream().map(sucursalDtoMapper).toList();
     }
 
     @Override
     public SucursalDto delete(Long id) {
-        return null;
+        Optional<Sucursal> sucursal = sucursalRespository.findById(id);
+        sucursal.ifPresent(sucursalRespository :: delete);
+        return sucursal.map(sucursalDtoMapper).orElseThrow();
     }
 
     @Override
     public void update(SucursalDto entity) {
-
+        Optional<Sucursal> sucursal = sucursalRespository.findById(entity.getId());
+        sucursal.ifPresent(sucursalRespository :: save);
     }
 }
