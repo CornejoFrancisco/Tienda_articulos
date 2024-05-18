@@ -10,7 +10,6 @@ import java.util.function.Function;
 @Service
 public class ClienteDtoMapper implements Function<Cliente, ClienteDto> {
 
-    private UsuarioRepository usuarioRepository;
     @Override
     public ClienteDto apply(Cliente cliente){
         return new ClienteDto(
@@ -19,8 +18,8 @@ public class ClienteDtoMapper implements Function<Cliente, ClienteDto> {
                 cliente.getNombre(),
                 cliente.getDomicilio(),
                 cliente.getSexo(),
-                cliente.getFecha_nacimiento(),
-                usuarioRepository.getReferenceById(cliente.getUsuario().getUsuario())
+                cliente.getFecha_nacimiento()
+
         );
     }
 

@@ -13,11 +13,9 @@ public class FacturaDtoMapper implements Function<Factura, FacturaDto> {
     public FacturaDto apply(Factura factura){
         return new FacturaDto(
                 factura.getId(),
-                factura.getNumero(),
                 factura.getFormaPago(),
                 factura.getFecha(),
                 factura.getTotal(),
-                factura.getDetalles(),
                 factura.getSucursal()
         );
     }

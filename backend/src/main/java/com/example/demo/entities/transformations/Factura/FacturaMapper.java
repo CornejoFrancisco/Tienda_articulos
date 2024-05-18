@@ -12,17 +12,13 @@ import java.util.function.Function;
 @Service
 public class FacturaMapper implements Function<Factura, FacturaDto>{
 
-
-
     @Override
     public FacturaDto apply(Factura factura){
         return new FacturaDto(
                 factura.getId(),
-                factura.getNumero(),
                 factura.getFormaPago(),
                 factura.getFecha(),
                 factura.getTotal(),
-                factura.getDetalles(),
                 factura.getSucursal()
                 );
     }

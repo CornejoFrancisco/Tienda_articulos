@@ -3,13 +3,15 @@ package com.example.demo.services.implementations;
 import com.example.demo.entities.DTO.SucursalDto;
 import com.example.demo.entities.Factura;
 import com.example.demo.entities.Sucursal;
+import com.example.demo.entities.Unidad_medida;
 import com.example.demo.entities.transformations.Sucursal.SucursalDtoMapper;
 import com.example.demo.repositories.SucursalRespository;
 import com.example.demo.services.Interfaces.SucursalService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-
+@Service
 public class SucursalServiceImpl implements SucursalService {
 
     private SucursalRespository sucursalRespository;
@@ -50,6 +52,9 @@ public class SucursalServiceImpl implements SucursalService {
     @Override
     public void update(SucursalDto entity) {
         Optional<Sucursal> sucursal = sucursalRespository.findById(entity.getId());
-        sucursal.ifPresent(sucursalRespository :: save);
+        sucursal.ifPresent(sucursal1 -> {
+            sucursal1.setNombre(entity.getNombre());
+            sucursalRespository.save(sucursal1);
+        });
     }
 }

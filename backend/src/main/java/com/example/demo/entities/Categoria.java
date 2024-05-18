@@ -16,9 +16,6 @@ import java.util.List;
 public class Categoria {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @TableGenerator(name = "categoria", table = "sqlite_sequence",
-            pkColumnName = "name", valueColumnName = "seq", pkColumnValue = "id",
-            initialValue = 1,allocationSize = 1)
     @Column(name = "idCategoria")
     private Long id_categoria;
 

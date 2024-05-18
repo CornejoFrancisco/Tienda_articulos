@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,12 +22,14 @@ public class Detallefactura {
     @Column(name = "id_detalle")
     private Long id_detalle;
 
-    @Column(name = "factura")
+    @Column(name = "id_factura")
     private Long factura;
 
     @Column(name = "cantidad")
     private int cantidad;
 
+    @Column(name = "fecha_realizada")
+    private Date fecha_realizada;
 
     @ManyToOne
     @JoinColumn(name = "articulo")

@@ -1,16 +1,18 @@
 package com.example.demo.services.implementations;
 
 import com.example.demo.entities.DTO.Unidad_medidaDto;
-import com.example.demo.entities.Factura;
 import com.example.demo.entities.Unidad_medida;
 import com.example.demo.entities.transformations.Unidad_medida.Unidad_medidaDtoMapper;
 import com.example.demo.repositories.UnidadMedidaRepository;
-import com.example.demo.services.Interfaces.Unidad_medidaService;
+import com.example.demo.services.Interfaces.UnidadMedidaService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-public class Unidad_medidaServiceImpl implements Unidad_medidaService {
+
+@Service
+public class Unidad_medidaServiceImpl implements UnidadMedidaService {
 
     private UnidadMedidaRepository unidadMedidaRepository;
     private Unidad_medidaDtoMapper unidadMedidaDtoMapper;
@@ -52,6 +54,11 @@ public class Unidad_medidaServiceImpl implements Unidad_medidaService {
     @Override
     public void update(Unidad_medidaDto entity) {
         Optional<Unidad_medida> unidad_medida = unidadMedidaRepository.findById(entity.getId_unidad_medida());
-        unidad_medida.ifPresent(unidadMedidaRepository :: save);
+
+        unidad_medida.ifPresent(unidad_medida1 ->
+        {
+            unidad_medida1.setNombre(entity.getNombre());
+            unidadMedidaRepository.save(unidad_medida1);
+        });
     }
 }

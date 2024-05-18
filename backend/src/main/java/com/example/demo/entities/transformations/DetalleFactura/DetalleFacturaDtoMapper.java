@@ -14,6 +14,7 @@ public class DetalleFacturaDtoMapper implements Function<Detallefactura, Detalle
                 detallefactura.getId_detalle(),
                 detallefactura.getFactura(),
                 detallefactura.getCantidad(),
+                detallefactura.getFecha_realizada(),
                 detallefactura.getArticulo()
                 );
     }

@@ -24,9 +24,6 @@ public class Factura {
     @Column(name = "id_factura")
     private Long id;
 
-    @Column(name = "numero")
-    private int numero;
-
     @ManyToOne
     @JoinColumn(name = "id_formapago")
     private Forma_pago formaPago;
@@ -37,8 +34,6 @@ public class Factura {
     @Column(name = "total")
     private int total;
 
-    @OneToMany(mappedBy = "factura")
-    private List<Detallefactura> detalles;
 
     @ManyToOne
     @JoinColumn(name = "id_sucursal")

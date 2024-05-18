@@ -11,7 +11,6 @@ import java.util.function.Function;
 @Service
 public class ClienteMapper implements Function<ClienteDto, Cliente> {
 
-    private UsuarioRepository usuarioRepository;
 
     @Override
     public Cliente apply(ClienteDto clienteDto){
@@ -21,8 +20,9 @@ public class ClienteMapper implements Function<ClienteDto, Cliente> {
                 clienteDto.getNombre(),
                 clienteDto.getDomicilio(),
                 clienteDto.getSexo(),
-                clienteDto.getFecha_nacimiento(),
-                usuarioRepository.getReferenceById(clienteDto.getUsuario().getUsuario())
-        );
+                clienteDto.getFecha_nacimiento()
+                );
     }
+
+
 }

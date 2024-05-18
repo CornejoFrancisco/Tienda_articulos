@@ -16,10 +16,7 @@ import java.util.Date;
 public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @TableGenerator(name = "cliente", table = "sqlite_sequence",
-            pkColumnName = "name", valueColumnName = "seq", pkColumnValue = "id",
-            initialValue = 1,allocationSize = 1)
-    @Column(name = "id")
+    @Column(name = "id_cliente")
     private Long id;
 
     @Column(name = "apellido")
@@ -37,7 +34,6 @@ public class Cliente {
     @Column(name = "fecha_nacimiento")
     private Date fecha_nacimiento;
 
-    @OneToOne(mappedBy = "usuario")
-    private Usuario usuario;
+
 
 }

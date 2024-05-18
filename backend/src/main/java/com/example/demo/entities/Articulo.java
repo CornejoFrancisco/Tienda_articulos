@@ -14,11 +14,8 @@ import lombok.NoArgsConstructor;
 public class Articulo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @TableGenerator(name = "articulo", table = "sqlite_sequence",
-            pkColumnName = "name", valueColumnName = "seq", pkColumnValue = "id",
-            initialValue = 1,allocationSize = 1)
     @Column(name = "idArticulo")
-    private Long id_articulo;
+    private Long idArticulo;
 
     @Column(name = "nombre")
     private String nombre;

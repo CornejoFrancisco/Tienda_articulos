@@ -6,11 +6,12 @@ import com.example.demo.entities.transformations.DetalleFactura.DetalleFacturaDt
 import com.example.demo.entities.transformations.DetalleFactura.DetalleFacutaMapper;
 import com.example.demo.repositories.DetalleFacturaRepository;
 import com.example.demo.services.Interfaces.DetalleFacturaService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
-
+@Service
 public class DetalleFacturaServiceImpl implements DetalleFacturaService {
 
     private DetalleFacturaRepository detalleFacturaRepository;

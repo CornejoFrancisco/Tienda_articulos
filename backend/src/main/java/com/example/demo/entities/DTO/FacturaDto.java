@@ -21,13 +21,10 @@ import java.util.List;
 public class FacturaDto {
     private Long id;
 
-    private int numero;
-
     private Forma_pago formaPago;
 
     private Date fecha;
     private int total;
-    private List<Detallefactura> detalles;
 
     private Sucursal sucursal;
 }

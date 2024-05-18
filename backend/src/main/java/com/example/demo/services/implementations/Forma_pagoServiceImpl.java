@@ -2,15 +2,17 @@ package com.example.demo.services.implementations;
 
 import com.example.demo.entities.DTO.Forma_pagoDto;
 import com.example.demo.entities.Forma_pago;
+import com.example.demo.entities.Unidad_medida;
 import com.example.demo.entities.transformations.Forma_pago.Forma_pagoDtoMapper;
 import com.example.demo.entities.transformations.Forma_pago.Forma_pagoMapper;
 import com.example.demo.repositories.FormaPagoRepository;
-import com.example.demo.services.Interfaces.Forma_pagoService;
+import com.example.demo.services.Interfaces.FormaPagoService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-
-public class Forma_pagoServiceImpl implements Forma_pagoService {
+@Service
+public class Forma_pagoServiceImpl implements FormaPagoService {
 
     private FormaPagoRepository formaPagoRepository;
     private Forma_pagoMapper formaPagoMapper;
@@ -53,6 +55,10 @@ public class Forma_pagoServiceImpl implements Forma_pagoService {
     @Override
     public void update(Forma_pagoDto entity) {
         Optional<Forma_pago> formaPago = formaPagoRepository.findById(entity.getId_pago());
-        formaPago.ifPresent(formaPagoRepository :: save);
+        formaPago.ifPresent(formaPago1 -> {
+            formaPago1.setNombre(entity.getNombre());
+            formaPagoRepository.save(formaPago1);
+        });
+
     }
 }

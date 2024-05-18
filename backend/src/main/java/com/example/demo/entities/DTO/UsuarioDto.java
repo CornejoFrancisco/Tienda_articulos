@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class UsuarioDto {
 
     private Long usuario;
-    private Cliente cliente;
+    private Long cliente;
     private String password;
     private String gmail;
 

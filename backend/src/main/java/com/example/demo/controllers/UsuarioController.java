@@ -45,16 +45,7 @@ public class UsuarioController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<UsuarioDto> update(@RequestBody UsuarioDto entity, @PathVariable("id") Long id) {
-        UsuarioDto value = usuarioService.getById(id);
-        if (value == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-        usuarioService.update(value);
 
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<UsuarioDto> delete(@PathVariable("id") Long id) {

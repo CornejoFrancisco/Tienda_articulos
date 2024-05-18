@@ -22,6 +22,4 @@ public class ClienteDto {
     private String domicilio;
     private String sexo;
     private Date fecha_nacimiento;
-    private Usuario usuario;
-
 }

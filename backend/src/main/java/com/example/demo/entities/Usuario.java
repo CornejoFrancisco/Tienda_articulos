@@ -18,17 +18,19 @@ public class Usuario {
     @TableGenerator(name = "usuario", table = "sqlite_sequence",
             pkColumnName = "name", valueColumnName = "seq", pkColumnValue = "id",
             initialValue = 1,allocationSize = 1)
-    @Column(name = "idUsuario")
+    @Column(name = "id_usuario")
     private Long usuario;
 
-    @OneToOne
-    @JoinColumn(name = "idCliente")
-    private Cliente cliente;
+
+    @Column(name = "id_cliente")
+    private Long cliente;
 
     @Column(name = "password")
     private String password;
 
     @Column(name = "gmail_usuario")
     private String gmail;
+
+
 
 }

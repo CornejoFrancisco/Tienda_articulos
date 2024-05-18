@@ -6,11 +6,12 @@ import com.example.demo.entities.transformations.Factura.FacturaDtoMapper;
 import com.example.demo.entities.transformations.Factura.FacturaMapper;
 import com.example.demo.repositories.FacturaRepository;
 import com.example.demo.services.Interfaces.FacturaService;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
+@Service
 public class FacturaServiceImpl implements FacturaService {
 
     private FacturaRepository facturaRepository;
@@ -24,19 +25,18 @@ public class FacturaServiceImpl implements FacturaService {
     }
 
     @Override
+
     public void add(FacturaDto entity) {
         Factura factura = new Factura();
-        factura.setDetalles(entity.getDetalles());
         Date date = new Date();
         factura.setFecha(date);
-        factura.setNumero(entity.getNumero());
         factura.setSucursal(entity.getSucursal());
         factura.setFormaPago(entity.getFormaPago());
-        factura.setDetalles(entity.getDetalles());
         facturaRepository.save(factura);
     }
 
     @Override
+
     public FacturaDto getById(Long id) {
         Optional<Factura> factura = facturaRepository.findById(id);
         return factura.map(facturaDtoMapper)
@@ -51,15 +51,12 @@ public class FacturaServiceImpl implements FacturaService {
     }
 
     @Override
+
     public FacturaDto delete(Long id) {
         Optional<Factura> factura = facturaRepository.findById(id);
         factura.ifPresent(facturaRepository :: delete);
         return factura.map(facturaDtoMapper).orElseThrow();
     }
 
-    @Override
-    public void update(FacturaDto entity) {
-        Optional<Factura> factura = facturaRepository.findById(entity.getId());
-        factura.ifPresent(facturaRepository :: save);
-    }
+
 }

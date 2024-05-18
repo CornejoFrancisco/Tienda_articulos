@@ -6,16 +6,22 @@ import com.example.demo.entities.transformations.Cliente.ClienteDtoMapper;
 import com.example.demo.entities.transformations.Cliente.ClienteMapper;
 import com.example.demo.repositories.ClienteRepository;
 import com.example.demo.services.Interfaces.ClienteService;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
-
+@Service
 public class ClienteServiceImpl implements ClienteService {
 
     private ClienteRepository clienteRepository;
     private ClienteDtoMapper clienteDtoMapper;
     private ClienteMapper clienteMapper;
+
 
     public ClienteServiceImpl(ClienteRepository clienteRepository, ClienteDtoMapper clienteDtoMapper, ClienteMapper clienteMapper) {
         this.clienteRepository = clienteRepository;
@@ -30,8 +36,8 @@ public class ClienteServiceImpl implements ClienteService {
         cliente.setSexo(entity.getSexo());
         cliente.setDomicilio(entity.getDomicilio());
         cliente.setNombre(entity.getNombre());
-        cliente.setFecha_nacimiento(entity.getFecha_nacimiento());
-        cliente.setUsuario(entity.getUsuario());
+        Date fecha_actual = new Date();
+        cliente.setFecha_nacimiento(fecha_actual);
         clienteRepository.save(cliente);
 
     }
@@ -60,10 +66,7 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public void update(ClienteDto entity) {
-        Optional<Cliente> cliente = Stream
-                .of(entity)
-                .map(clienteMapper)
-                .findAny();
+        Optional<Cliente> cliente = clienteRepository.findById(entity.getId());
         cliente.ifPresent(clienteRepository :: save);
     }
 }

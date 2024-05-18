@@ -15,6 +15,7 @@ public class DetalleFacutaMapper implements Function<DetalleFacturaDto, Detallef
                 detalleFacturaDto.getId_detalle(),
                 detalleFacturaDto.getFactura(),
                 detalleFacturaDto.getCantidad(),
+                detalleFacturaDto.getFecha_realizada(),
                 detalleFacturaDto.getArticulo()
         );
     }

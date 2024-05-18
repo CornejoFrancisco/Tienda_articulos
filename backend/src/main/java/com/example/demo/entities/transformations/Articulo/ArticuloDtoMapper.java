@@ -12,7 +12,7 @@ public class ArticuloDtoMapper implements Function<Articulo, ArticuloDto> {
     @Override
     public ArticuloDto apply(Articulo articulo){
         return new ArticuloDto(
-                articulo.getId_articulo(),
+                articulo.getIdArticulo(),
                 articulo.getNombre(),
                 articulo.getPrecio(),
                 articulo.getCategoria().getId_categoria(),

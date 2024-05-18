@@ -10,11 +10,12 @@ import com.example.demo.repositories.ArticuloRepository;
 import com.example.demo.repositories.CategoriaRepository;
 import com.example.demo.repositories.UnidadMedidaRepository;
 import com.example.demo.services.Interfaces.ArticuloService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
-
+@Service
 public class ArticuloServiceImpl implements ArticuloService {
 
     private CategoriaRepository categoriaRepository;
