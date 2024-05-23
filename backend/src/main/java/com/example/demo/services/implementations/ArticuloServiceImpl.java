@@ -10,6 +10,8 @@ import com.example.demo.repositories.ArticuloRepository;
 import com.example.demo.repositories.CategoriaRepository;
 import com.example.demo.repositories.UnidadMedidaRepository;
 import com.example.demo.services.Interfaces.ArticuloService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,7 +35,7 @@ public class ArticuloServiceImpl implements ArticuloService {
     }
 
     @Override
-    public void add(ArticuloDto entity) {
+    public ResponseEntity<String> add(ArticuloDto entity) {
         Articulo articulo = new Articulo();
         Categoria categoria = categoriaRepository.getReferenceById(entity.getCategoria());
         articulo.setCategoria(categoria);
@@ -42,6 +44,7 @@ public class ArticuloServiceImpl implements ArticuloService {
         Unidad_medida unidad_medida = unidadMedidaRepository.getReferenceById(entity.getUnidad_medida());
         articulo.setUnidad_medida(unidad_medida);
         articuloRepository.save(articulo);
+        return new ResponseEntity<>("Registro de articulo exitoso", HttpStatus.OK);
     }
 
     @Override

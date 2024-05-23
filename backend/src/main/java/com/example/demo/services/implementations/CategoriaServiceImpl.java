@@ -6,6 +6,8 @@ import com.example.demo.entities.transformations.Categoria.CategoriaDtoMapper;
 import com.example.demo.entities.transformations.Categoria.CategoriaMapper;
 import com.example.demo.repositories.CategoriaRepository;
 import com.example.demo.services.Interfaces.CategoriaService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,10 +27,11 @@ public class CategoriaServiceImpl implements CategoriaService {
     }
 
     @Override
-    public void add(CategoriaDto entity) {
+    public ResponseEntity<String> add(CategoriaDto entity) {
         Categoria categoria = new Categoria();
         categoria.setNombre(entity.getNombre());
         categoriaRepository.save(categoria);
+        return new ResponseEntity<>("Registro de categoria exitoso", HttpStatus.OK);
     }
 
     @Override

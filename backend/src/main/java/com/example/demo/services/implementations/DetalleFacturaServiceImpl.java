@@ -6,6 +6,8 @@ import com.example.demo.entities.transformations.DetalleFactura.DetalleFacturaDt
 import com.example.demo.entities.transformations.DetalleFactura.DetalleFacutaMapper;
 import com.example.demo.repositories.DetalleFacturaRepository;
 import com.example.demo.services.Interfaces.DetalleFacturaService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,12 +27,13 @@ public class DetalleFacturaServiceImpl implements DetalleFacturaService {
     }
 
     @Override
-    public void add(DetalleFacturaDto entity) {
+    public ResponseEntity<String> add(DetalleFacturaDto entity) {
         Detallefactura detallefactura = new Detallefactura();
         detallefactura.setFactura(entity.getFactura());
         detallefactura.setCantidad(entity.getCantidad());
         detallefactura.setArticulo(entity.getArticulo());
         detalleFacturaRepository.save(detallefactura);
+        return new ResponseEntity<>("Registro de categoria detalle factura", HttpStatus.OK);
     }
 
     @Override

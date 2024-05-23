@@ -6,6 +6,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CollectionId;
+import org.springframework.security.core.GrantedAuthority;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,6 +26,8 @@ public class Usuario {
     @Column(name = "id_usuario")
     private Long usuario;
 
+    @Column(name = "nombre")
+    private String nombre;
 
     @Column(name = "id_cliente")
     private Long cliente;
@@ -30,6 +37,11 @@ public class Usuario {
 
     @Column(name = "gmail_usuario")
     private String gmail;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "usuario_roles", joinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "id_usuario")
+            , inverseJoinColumns = @JoinColumn(name = "roles_id", referencedColumnName = "id"))
+    private List<Rol> roles = new ArrayList<>();
 
 
 

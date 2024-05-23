@@ -2,7 +2,6 @@ package com.example.demo.controllers;
 
 
 import com.example.demo.entities.DTO.UsuarioDto;
-import com.example.demo.entities.Usuario;
 import com.example.demo.services.Interfaces.UsuarioService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,11 +32,16 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> add(@RequestBody UsuarioDto entity) {
+    public ResponseEntity<Void> addAdmi(@RequestBody UsuarioDto entity) {
         usuarioService.add(entity);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @PostMapping("/admin")
+    public void add(@RequestBody UsuarioDto entity) {
+        usuarioService.addAdmi(entity);
+
+    }
 
     @PutMapping()
     public ResponseEntity<UsuarioDto> update(@RequestBody UsuarioDto entity) {

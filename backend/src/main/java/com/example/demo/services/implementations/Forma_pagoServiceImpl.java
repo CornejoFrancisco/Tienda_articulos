@@ -7,6 +7,8 @@ import com.example.demo.entities.transformations.Forma_pago.Forma_pagoDtoMapper;
 import com.example.demo.entities.transformations.Forma_pago.Forma_pagoMapper;
 import com.example.demo.repositories.FormaPagoRepository;
 import com.example.demo.services.Interfaces.FormaPagoService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,10 +27,11 @@ public class Forma_pagoServiceImpl implements FormaPagoService {
     }
 
     @Override
-    public void add(Forma_pagoDto entity) {
+    public ResponseEntity<String> add(Forma_pagoDto entity) {
         Forma_pago formaPago = new Forma_pago();
         formaPago.setNombre(entity.getNombre());
         formaPagoRepository.save(formaPago);
+        return new ResponseEntity<>("Registro de categoria forma pago", HttpStatus.OK);
     }
 
     @Override

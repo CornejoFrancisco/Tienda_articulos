@@ -5,6 +5,8 @@ import com.example.demo.entities.Unidad_medida;
 import com.example.demo.entities.transformations.Unidad_medida.Unidad_medidaDtoMapper;
 import com.example.demo.repositories.UnidadMedidaRepository;
 import com.example.demo.services.Interfaces.UnidadMedidaService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,10 +25,11 @@ public class Unidad_medidaServiceImpl implements UnidadMedidaService {
     }
 
     @Override
-    public void add(Unidad_medidaDto entity) {
+    public ResponseEntity<String> add(Unidad_medidaDto entity) {
         Unidad_medida unidad_medida = new Unidad_medida();
         unidad_medida.setNombre(entity.getNombre());
         unidadMedidaRepository.save(unidad_medida);
+        return new ResponseEntity<>("Registro de categoria unidad medida", HttpStatus.OK);
     }
 
     @Override

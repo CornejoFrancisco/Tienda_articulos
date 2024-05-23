@@ -6,7 +6,6 @@ import com.example.demo.entities.transformations.Cliente.ClienteDtoMapper;
 import com.example.demo.entities.transformations.Cliente.ClienteMapper;
 import com.example.demo.repositories.ClienteRepository;
 import com.example.demo.services.Interfaces.ClienteService;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 @Service
 public class ClienteServiceImpl implements ClienteService {
 
@@ -30,7 +28,7 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public void add(ClienteDto entity) {
+    public ResponseEntity<String> add(ClienteDto entity) {
         Cliente cliente = new Cliente();
         cliente.setApellido(entity.getApellido());
         cliente.setSexo(entity.getSexo());
@@ -39,6 +37,7 @@ public class ClienteServiceImpl implements ClienteService {
         Date fecha_actual = new Date();
         cliente.setFecha_nacimiento(fecha_actual);
         clienteRepository.save(cliente);
+        return new ResponseEntity<>("Registro de categoria cliente", HttpStatus.OK);
 
     }
 

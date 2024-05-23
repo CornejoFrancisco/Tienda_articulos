@@ -6,6 +6,8 @@ import com.example.demo.entities.transformations.Factura.FacturaDtoMapper;
 import com.example.demo.entities.transformations.Factura.FacturaMapper;
 import com.example.demo.repositories.FacturaRepository;
 import com.example.demo.services.Interfaces.FacturaService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -26,13 +28,14 @@ public class FacturaServiceImpl implements FacturaService {
 
     @Override
 
-    public void add(FacturaDto entity) {
+    public ResponseEntity<String> add(FacturaDto entity) {
         Factura factura = new Factura();
         Date date = new Date();
         factura.setFecha(date);
         factura.setSucursal(entity.getSucursal());
         factura.setFormaPago(entity.getFormaPago());
         facturaRepository.save(factura);
+        return new ResponseEntity<>("Registro de categoria factura", HttpStatus.OK);
     }
 
     @Override
@@ -57,6 +60,8 @@ public class FacturaServiceImpl implements FacturaService {
         factura.ifPresent(facturaRepository :: delete);
         return factura.map(facturaDtoMapper).orElseThrow();
     }
+
+
 
 
 }

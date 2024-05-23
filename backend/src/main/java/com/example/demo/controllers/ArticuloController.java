@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/articulo")
@@ -27,15 +28,25 @@ public class ArticuloController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ArticuloDto> getById(@PathVariable("id") Long id) {
-        ArticuloDto value = articuloService.getById(id);
-        return ResponseEntity.ok(value);
+        try {
+            ArticuloDto value = articuloService.getById(id);
+            return ResponseEntity.ok(value);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
+
 
     @PostMapping
     public ResponseEntity<Void> add(@RequestBody ArticuloDto entity) {
         articuloService.add(entity);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
+
+
 
 
     @PutMapping()

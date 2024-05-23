@@ -1,17 +1,18 @@
 package com.example.demo.services.implementations;
 
-import com.example.demo.entities.Cliente;
-import com.example.demo.entities.DTO.ClienteDto;
 import com.example.demo.entities.DTO.UsuarioDto;
-import com.example.demo.entities.Factura;
+import com.example.demo.entities.Rol;
 import com.example.demo.entities.Usuario;
 import com.example.demo.entities.transformations.Usuario.UsuarioDtoMapper;
-import com.example.demo.repositories.ClienteRepository;
+import com.example.demo.repositories.RolRepository;
 import com.example.demo.repositories.UsuarioRepository;
-import com.example.demo.services.Interfaces.ClienteService;
 import com.example.demo.services.Interfaces.UsuarioService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,23 +22,35 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     private UsuarioRepository usuarioRepository;
     private UsuarioDtoMapper usuarioDtoMapper;
-    private UsuarioService usuarioService;
+    private PasswordEncoder passwordEncoder;
 
-    public UsuarioServiceImpl(UsuarioRepository usuarioRepository, UsuarioDtoMapper usuarioDtoMapper) {
+    private RolRepository rolRepository;
+    public UsuarioServiceImpl(UsuarioRepository usuarioRepository, UsuarioDtoMapper usuarioDtoMapper, PasswordEncoder passwordEncoder, RolRepository rolRepository) {
         this.usuarioRepository = usuarioRepository;
         this.usuarioDtoMapper = usuarioDtoMapper;
+        this.passwordEncoder = passwordEncoder;
+        this.rolRepository = rolRepository;
     }
 
     @Override
-    public void add(UsuarioDto entity) {
-        boolean mail_usado = verificacion_mail(entity);
-        if(!mail_usado) {
-            Usuario usuario = new Usuario();
-            usuario.setPassword(entity.getPassword());
-            usuario.setGmail(entity.getGmail());
-            usuario.setCliente(entity.getCliente());
-            usuarioRepository.save(usuario);
+    public ResponseEntity<String> add(UsuarioDto entity) {
+
+        if (findByUsername(entity.getNombre())) {
+            return new ResponseEntity<>("el usuario ya existe, intenta con otro", HttpStatus.BAD_REQUEST);
         }
+        boolean mail_usado = verificacion_mail(entity);
+        if(mail_usado) {
+            return new ResponseEntity<>("el usuario con ese mail, intenta con otro", HttpStatus.BAD_REQUEST);
+        }
+        Usuario usuario = new Usuario();
+        usuario.setPassword(passwordEncoder.encode(entity.getPassword()));
+        usuario.setNombre(entity.getNombre());
+        usuario.setGmail(entity.getGmail());
+        usuario.setCliente(entity.getCliente());
+        List<Rol> roles = Collections.singletonList(entity.getRol());
+        usuario.setRoles(roles);
+        usuarioRepository.save(usuario);
+        return new ResponseEntity<>("el usuario creado", HttpStatus.BAD_REQUEST);
     }
 
     private boolean verificacion_mail(UsuarioDto entity) {
@@ -80,6 +93,52 @@ public class UsuarioServiceImpl implements UsuarioService {
         if(!mail_usado){
             usuario.ifPresent(usuarioRepository :: save);
         }
+
+    }
+
+    @Override
+    public ResponseEntity<String> addAdmi(UsuarioDto entity) {
+
+        if (findByUsername(entity.getNombre())) {
+            return new ResponseEntity<>("el usuario ya existe, intenta con otro", HttpStatus.BAD_REQUEST);
+        }
+        boolean mail_usado = verificacion_mail(entity);
+        if(mail_usado) {
+            return new ResponseEntity<>("el usuario con ese mail, intenta con otro", HttpStatus.BAD_REQUEST);
+        }
+        Usuario usuario = new Usuario();
+        usuario.setNombre(entity.getNombre());
+        usuario.setPassword(passwordEncoder.encode(entity.getPassword()));
+        usuario.setGmail(entity.getGmail());
+        usuario.setCliente(entity.getCliente());
+        Rol rol = rolRepository.findByName("ADMIN").get();
+        List<Rol> roles = Collections.singletonList(entity.getRol());
+        usuario.setRoles(roles);
+        usuarioRepository.save(usuario);
+        return new ResponseEntity<>("el usuario creado", HttpStatus.BAD_REQUEST);
+    }
+
+
+
+    public boolean findByUsername(String username) {
+        List<Usuario> list_usuario = usuarioRepository.findAll();
+        boolean usuario = verificacion_usuario(list_usuario, username);
+        return usuario;
+    }
+
+
+
+    private boolean verificacion_usuario(List<Usuario> usuarios, String name) {
+        Usuario usuario_encontrado = new Usuario();
+        boolean encontrardo = false;
+        for(int i = 1; i < usuarios.size(); i ++ ){
+            usuario_encontrado = usuarios.get(i);
+            if(usuario_encontrado.getNombre().equals(name)){
+                encontrardo = true;
+                return encontrardo;
+            }
+        }
+        return encontrardo;
 
     }
 }

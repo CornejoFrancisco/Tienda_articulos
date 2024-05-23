@@ -7,6 +7,8 @@ import com.example.demo.entities.Unidad_medida;
 import com.example.demo.entities.transformations.Sucursal.SucursalDtoMapper;
 import com.example.demo.repositories.SucursalRespository;
 import com.example.demo.services.Interfaces.SucursalService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,10 +25,11 @@ public class SucursalServiceImpl implements SucursalService {
     }
 
     @Override
-    public void add(SucursalDto entity) {
+    public ResponseEntity<String> add(SucursalDto entity) {
         Sucursal sucursal = new Sucursal();
         sucursal.setNombre(entity.getNombre());
         sucursalRespository.save(sucursal);
+        return new ResponseEntity<>("Registro de categoria sucursal", HttpStatus.OK);
     }
 
     @Override
