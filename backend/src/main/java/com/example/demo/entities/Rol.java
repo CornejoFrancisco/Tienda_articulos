@@ -22,8 +22,8 @@ public class Rol {
         @Column(name = "id")
         private Long id;
 
-        @Column(name = "nombre")
-        private String nombre;
+        @Column(name = "name")
+        private String name;
 
 
 

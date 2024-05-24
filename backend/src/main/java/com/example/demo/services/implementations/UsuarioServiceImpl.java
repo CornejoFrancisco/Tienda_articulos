@@ -35,7 +35,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public ResponseEntity<String> add(UsuarioDto entity) {
 
-        if (findByUsername(entity.getNombre())) {
+        if (findByUsername(entity.getUsername())) {
             return new ResponseEntity<>("el usuario ya existe, intenta con otro", HttpStatus.BAD_REQUEST);
         }
         boolean mail_usado = verificacion_mail(entity);
@@ -44,7 +44,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         }
         Usuario usuario = new Usuario();
         usuario.setPassword(passwordEncoder.encode(entity.getPassword()));
-        usuario.setNombre(entity.getNombre());
+        usuario.setUsername(entity.getUsername());
         usuario.setGmail(entity.getGmail());
         usuario.setCliente(entity.getCliente());
         List<Rol> roles = Collections.singletonList(entity.getRol());
@@ -99,7 +99,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public ResponseEntity<String> addAdmi(UsuarioDto entity) {
 
-        if (findByUsername(entity.getNombre())) {
+        if (findByUsername(entity.getUsername())) {
             return new ResponseEntity<>("el usuario ya existe, intenta con otro", HttpStatus.BAD_REQUEST);
         }
         boolean mail_usado = verificacion_mail(entity);
@@ -107,12 +107,12 @@ public class UsuarioServiceImpl implements UsuarioService {
             return new ResponseEntity<>("el usuario con ese mail, intenta con otro", HttpStatus.BAD_REQUEST);
         }
         Usuario usuario = new Usuario();
-        usuario.setNombre(entity.getNombre());
+        usuario.setUsername(entity.getUsername());
         usuario.setPassword(passwordEncoder.encode(entity.getPassword()));
         usuario.setGmail(entity.getGmail());
         usuario.setCliente(entity.getCliente());
         Rol rol = rolRepository.findByName("ADMIN").get();
-        List<Rol> roles = Collections.singletonList(entity.getRol());
+        List<Rol> roles = Collections.singletonList(rol);
         usuario.setRoles(roles);
         usuarioRepository.save(usuario);
         return new ResponseEntity<>("el usuario creado", HttpStatus.BAD_REQUEST);
@@ -133,7 +133,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         boolean encontrardo = false;
         for(int i = 1; i < usuarios.size(); i ++ ){
             usuario_encontrado = usuarios.get(i);
-            if(usuario_encontrado.getNombre().equals(name)){
+            if(usuario_encontrado.getUsername().equals(name)){
                 encontrardo = true;
                 return encontrardo;
             }

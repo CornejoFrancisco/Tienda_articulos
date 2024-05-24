@@ -50,16 +50,7 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests() //Toda petición http debe ser autorizada
-                .requestMatchers(HttpMethod.POST, "/articulo").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.GET, "/articulo/**").authenticated()
-                .requestMatchers(HttpMethod.GET, "/categoria/**").authenticated()
-                .requestMatchers(HttpMethod.GET, "/cliente/**").authenticated()
-                .requestMatchers(HttpMethod.GET, "/detalleFactura/**").authenticated()
-                .requestMatchers(HttpMethod.GET, "/factura/**").authenticated()
-                .requestMatchers(HttpMethod.GET, "/forma_pago/**").authenticated()
-                .requestMatchers(HttpMethod.GET, "/sucursal/**").authenticated()
-                .requestMatchers(HttpMethod.GET, "/unidad_medida/**").authenticated()
-                .requestMatchers(HttpMethod.GET, "/usuario/**").authenticated()
+                .requestMatchers("/api/user/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();

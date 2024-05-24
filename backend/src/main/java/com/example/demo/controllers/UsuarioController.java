@@ -1,10 +1,17 @@
 package com.example.demo.controllers;
 
 
+import com.example.demo.entities.DTO.DtoAuthRespuesta;
+import com.example.demo.entities.DTO.DtoLogin;
 import com.example.demo.entities.DTO.UsuarioDto;
+import com.example.demo.security.JwtGenerador;
 import com.example.demo.services.Interfaces.UsuarioService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,9 +20,12 @@ import java.util.List;
 @RequestMapping("/api/user")
 public class UsuarioController {
     private final UsuarioService usuarioService;
-
-    public UsuarioController(UsuarioService usuarioService) {
+    private AuthenticationManager authenticationManager;
+    private JwtGenerador jwtGenerador;
+    public UsuarioController(UsuarioService usuarioService, AuthenticationManager authenticationManager, JwtGenerador jwtGenerador) {
         this.usuarioService = usuarioService;
+        this.authenticationManager = authenticationManager;
+        this.jwtGenerador = jwtGenerador;
     }
 
 
@@ -55,5 +65,14 @@ public class UsuarioController {
     public ResponseEntity<UsuarioDto> delete(@PathVariable("id") Long id) {
         usuarioService.delete(id);
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @PostMapping("login")
+    public ResponseEntity<DtoAuthRespuesta> login(@RequestBody DtoLogin dtoLogin) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                dtoLogin.getUsername(), dtoLogin.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token = jwtGenerador.generarToken(authentication);
+        return new ResponseEntity<>(new DtoAuthRespuesta(token), HttpStatus.OK);
     }
 }

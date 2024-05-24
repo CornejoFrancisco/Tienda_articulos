@@ -21,7 +21,7 @@ public class UsuarioDtoMapper implements Function<Usuario, UsuarioDto> {
         return new UsuarioDto(
                 usuario.getUsuario(),
                 usuario.getCliente(),
-                usuario.getNombre(),
+                usuario.getUsername(),
                 usuario.getPassword(),
                 usuario.getGmail(),
                 rol

@@ -18,7 +18,7 @@ public class UsuarioDto {
 
     private Long usuario;
     private Long cliente;
-    private String nombre;
+    private String username;
     private String password;
     private String gmail;
     private Rol rol;

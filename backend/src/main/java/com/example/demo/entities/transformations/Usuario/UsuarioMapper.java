@@ -16,7 +16,7 @@ public class UsuarioMapper implements Function<UsuarioDto, Usuario> {
         List<Rol> roles = Collections.singletonList(usuarioDto.getRol());
         return new Usuario(
                 usuarioDto.getUsuario(),
-                usuarioDto.getNombre(),
+                usuarioDto.getUsername(),
                 usuarioDto.getCliente(),
                 usuarioDto.getPassword(),
                 usuarioDto.getGmail(),

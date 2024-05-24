@@ -27,7 +27,7 @@ public class Usuario {
     private Long usuario;
 
     @Column(name = "nombre")
-    private String nombre;
+    private String username;
 
     @Column(name = "id_cliente")
     private Long cliente;
@@ -39,10 +39,8 @@ public class Usuario {
     private String gmail;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "usuario_roles", joinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "id_usuario")
-            , inverseJoinColumns = @JoinColumn(name = "roles_id", referencedColumnName = "id"))
+    @JoinTable(name = "usuario_roles", joinColumns = @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
+            , inverseJoinColumns = @JoinColumn(name = "id_roles", referencedColumnName = "id"))
     private List<Rol> roles = new ArrayList<>();
-
-
 
 }
