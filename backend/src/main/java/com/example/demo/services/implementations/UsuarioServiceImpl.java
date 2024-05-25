@@ -1,6 +1,8 @@
 package com.example.demo.services.implementations;
 
 import com.example.demo.entities.DTO.UsuarioDto;
+import com.example.demo.entities.DTO.UsuarioDtoAdmin;
+import com.example.demo.entities.DTO.UsuarioDtoUser;
 import com.example.demo.entities.Rol;
 import com.example.demo.entities.Usuario;
 import com.example.demo.entities.transformations.Usuario.UsuarioDtoMapper;
@@ -33,12 +35,12 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public ResponseEntity<String> add(UsuarioDto entity) {
+    public ResponseEntity<String> addUser(UsuarioDtoUser entity) {
 
         if (findByUsername(entity.getUsername())) {
             return new ResponseEntity<>("el usuario ya existe, intenta con otro", HttpStatus.BAD_REQUEST);
         }
-        boolean mail_usado = verificacion_mail(entity);
+        boolean mail_usado = verificacion_mail(entity.getGmail());
         if(mail_usado) {
             return new ResponseEntity<>("el usuario con ese mail, intenta con otro", HttpStatus.BAD_REQUEST);
         }
@@ -47,14 +49,14 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuario.setUsername(entity.getUsername());
         usuario.setGmail(entity.getGmail());
         usuario.setCliente(entity.getCliente());
-        List<Rol> roles = Collections.singletonList(entity.getRol());
-        usuario.setRoles(roles);
+
+        Rol roles = rolRepository.findByName("USER").get();
+        usuario.setRol(roles);
         usuarioRepository.save(usuario);
         return new ResponseEntity<>("el usuario creado", HttpStatus.BAD_REQUEST);
     }
 
-    private boolean verificacion_mail(UsuarioDto entity) {
-        String gmail = entity.getGmail();
+    private boolean verificacion_mail(String gmail) {
         List<UsuarioDto> listausuarioDto = getAll();
         boolean mail_usado = false;
         for(int i = 0; i < listausuarioDto.size(); i ++ ){
@@ -65,6 +67,11 @@ public class UsuarioServiceImpl implements UsuarioService {
             }
         }
         return mail_usado;
+    }
+
+    @Override
+    public ResponseEntity<String> add(UsuarioDto entity) {
+        return null;
     }
 
     @Override
@@ -89,7 +96,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public void update(UsuarioDto entity) {
         Optional<Usuario> usuario = usuarioRepository.findById(entity.getUsuario());
-        boolean mail_usado = verificacion_mail(entity);
+        boolean mail_usado = verificacion_mail(entity.getGmail());
         if(!mail_usado){
             usuario.ifPresent(usuarioRepository :: save);
         }
@@ -97,12 +104,12 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public ResponseEntity<String> addAdmi(UsuarioDto entity) {
+    public ResponseEntity<String> addAdmi(UsuarioDtoAdmin entity) {
 
         if (findByUsername(entity.getUsername())) {
             return new ResponseEntity<>("el usuario ya existe, intenta con otro", HttpStatus.BAD_REQUEST);
         }
-        boolean mail_usado = verificacion_mail(entity);
+        boolean mail_usado = verificacion_mail(entity.getGmail());
         if(mail_usado) {
             return new ResponseEntity<>("el usuario con ese mail, intenta con otro", HttpStatus.BAD_REQUEST);
         }
@@ -111,11 +118,10 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuario.setPassword(passwordEncoder.encode(entity.getPassword()));
         usuario.setGmail(entity.getGmail());
         usuario.setCliente(entity.getCliente());
-        Rol rol = rolRepository.findByName("ADMIN").get();
-        List<Rol> roles = Collections.singletonList(rol);
-        usuario.setRoles(roles);
+        Rol roles = rolRepository.findByName("ADMI").get();
+        usuario.setRol(roles);
         usuarioRepository.save(usuario);
-        return new ResponseEntity<>("el usuario creado", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("El usuario creado", HttpStatus.BAD_REQUEST);
     }
 
 

@@ -1,11 +1,10 @@
 package com.example.demo.controllers;
 
 
-import com.example.demo.entities.DTO.DtoAuthRespuesta;
-import com.example.demo.entities.DTO.DtoLogin;
-import com.example.demo.entities.DTO.UsuarioDto;
+import com.example.demo.entities.DTO.*;
 import com.example.demo.security.JwtGenerador;
 import com.example.demo.services.Interfaces.UsuarioService;
+import org.springframework.boot.origin.SystemEnvironmentOrigin;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -42,20 +41,21 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> addAdmi(@RequestBody UsuarioDto entity) {
-        usuarioService.add(entity);
+    public ResponseEntity<Void> addAdmi(@RequestBody UsuarioDtoUser entity) {
+        usuarioService.addUser(entity);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PostMapping("/admin")
-    public void add(@RequestBody UsuarioDto entity) {
+    public ResponseEntity<Void> add(@RequestBody UsuarioDtoAdmin entity) {
         usuarioService.addAdmi(entity);
 
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping()
     public ResponseEntity<UsuarioDto> update(@RequestBody UsuarioDto entity) {
-        usuarioService.add(entity);
+        usuarioService.update(entity);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -67,11 +67,12 @@ public class UsuarioController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @PostMapping("login")
+    @PostMapping("/login")
     public ResponseEntity<DtoAuthRespuesta> login(@RequestBody DtoLogin dtoLogin) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 dtoLogin.getUsername(), dtoLogin.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        System.out.println("ASdssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssASdssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss");
         String token = jwtGenerador.generarToken(authentication);
         return new ResponseEntity<>(new DtoAuthRespuesta(token), HttpStatus.OK);
     }

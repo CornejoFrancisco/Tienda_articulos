@@ -13,10 +13,7 @@ import java.util.function.Function;
 public class UsuarioDtoMapper implements Function<Usuario, UsuarioDto> {
     @Override
     public UsuarioDto apply(Usuario usuario){
-        Rol rol = null;
-        if (usuario.getRoles() != null && !usuario.getRoles().isEmpty()) {
-            rol = usuario.getRoles().get(0); // Toma el primer rol de la lista
-        }
+
 
         return new UsuarioDto(
                 usuario.getUsuario(),
@@ -24,7 +21,7 @@ public class UsuarioDtoMapper implements Function<Usuario, UsuarioDto> {
                 usuario.getUsername(),
                 usuario.getPassword(),
                 usuario.getGmail(),
-                rol
+                usuario.getRol()
         );
     }
 }

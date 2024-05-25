@@ -38,9 +38,8 @@ public class Usuario {
     @Column(name = "gmail_usuario")
     private String gmail;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "usuario_roles", joinColumns = @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
-            , inverseJoinColumns = @JoinColumn(name = "id_roles", referencedColumnName = "id"))
-    private List<Rol> roles = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_rol")
+    private Rol rol;
 
 }
