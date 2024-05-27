@@ -51,6 +51,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeHttpRequests() //Toda petición http debe ser autorizada
                 .requestMatchers("/api/user/**").permitAll()
+                .requestMatchers(HttpMethod.POST,"/api/user/login").permitAll()
                 .requestMatchers(HttpMethod.GET,"/api/articulo/**").hasAnyAuthority("ADMI", "USER")
                 .requestMatchers(HttpMethod.GET,"/api/sucursal/**").hasAuthority("USER")
                 .requestMatchers(HttpMethod.GET,"/api/unidad_medida/**").hasAuthority("ADMI")

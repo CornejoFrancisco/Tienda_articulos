@@ -72,8 +72,8 @@ public class UsuarioController {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 dtoLogin.getUsername(), dtoLogin.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        System.out.println("ASdssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssASdssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss");
         String token = jwtGenerador.generarToken(authentication);
+        System.out.println(token);
         return new ResponseEntity<>(new DtoAuthRespuesta(token), HttpStatus.OK);
     }
 }
