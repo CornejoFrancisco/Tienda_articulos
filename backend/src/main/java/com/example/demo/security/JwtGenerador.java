@@ -30,6 +30,7 @@ public class JwtGenerador {
         return token;
     }
 
+
     //Método para extraer un Username apartir de un token
     public String obtenerUsernameDeJwt(String token) {
         Claims claims = Jwts.parser()

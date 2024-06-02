@@ -2,13 +2,13 @@ package com.example.demo.services.implementations;
 
 import com.example.demo.entities.Articulo;
 import com.example.demo.entities.Categoria;
+import com.example.demo.entities.DTO.ArticuloClienteDto;
 import com.example.demo.entities.DTO.ArticuloDto;
 import com.example.demo.entities.Unidad_medida;
+import com.example.demo.entities.Usuario;
 import com.example.demo.entities.transformations.Articulo.ArticuloDtoMapper;
 import com.example.demo.entities.transformations.Articulo.ArticuloMapper;
-import com.example.demo.repositories.ArticuloRepository;
-import com.example.demo.repositories.CategoriaRepository;
-import com.example.demo.repositories.UnidadMedidaRepository;
+import com.example.demo.repositories.*;
 import com.example.demo.services.Interfaces.ArticuloService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,12 +26,18 @@ public class ArticuloServiceImpl implements ArticuloService {
     private ArticuloRepository articuloRepository;
     private ArticuloDtoMapper articuloDtoMapper;
     private ArticuloMapper articuloMapper;
-    public ArticuloServiceImpl(CategoriaRepository categoriaRepository, UnidadMedidaRepository unidadMedidaRepository, ArticuloRepository articuloRepository, ArticuloDtoMapper articuloDtoMapper, ArticuloMapper articuloMapper) {
+
+    private UsuarioRepository usuarioRepository;
+
+    private UsuarioArticuloRepository usuarioArticuloRepository;
+    public ArticuloServiceImpl(CategoriaRepository categoriaRepository, UnidadMedidaRepository unidadMedidaRepository, ArticuloRepository articuloRepository, ArticuloDtoMapper articuloDtoMapper, ArticuloMapper articuloMapper, UsuarioRepository usuarioRepository, UsuarioArticuloRepository usuarioArticuloRepository) {
         this.categoriaRepository = categoriaRepository;
         this.unidadMedidaRepository = unidadMedidaRepository;
         this.articuloRepository = articuloRepository;
         this.articuloDtoMapper = articuloDtoMapper;
         this.articuloMapper = articuloMapper;
+        this.usuarioRepository = usuarioRepository;
+        this.usuarioArticuloRepository = usuarioArticuloRepository;
     }
 
     @Override
@@ -72,5 +78,21 @@ public class ArticuloServiceImpl implements ArticuloService {
                 .map(articuloMapper)
                 .findAny();
         articulo.ifPresent(articuloRepository :: save);
+    }
+
+    @Override
+    public void addMegusta(ArticuloClienteDto articuloClienteDto) {
+        Articulo articulo = articuloRepository.getReferenceById(articuloClienteDto.getId_articulo());
+        Usuario usuario = usuarioRepository.getReferenceById(articuloClienteDto.getId_usuario());
+
+        articulo.setMe_gusta(articulo.getMe_gusta() + 1);
+        articuloRepository.save(articulo);
+
+        ArticuloClienteDto articuloClienteDto1 = new ArticuloClienteDto();
+        articuloClienteDto1.setId_articulo(articulo.getIdArticulo());
+        articuloClienteDto1.setId_usuario(usuario.getUsuario());
+        usuarioArticuloRepository.save(articuloClienteDto1);
+
+
     }
 }

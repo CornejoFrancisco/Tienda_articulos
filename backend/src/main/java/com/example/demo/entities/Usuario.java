@@ -29,8 +29,9 @@ public class Usuario {
     @Column(name = "nombre")
     private String username;
 
-    @Column(name = "id_cliente")
-    private Long cliente;
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_cliente")
+    private Cliente cliente;
 
     @Column(name = "password")
     private String password;
@@ -41,5 +42,13 @@ public class Usuario {
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_rol")
     private Rol rol;
+
+    @ManyToMany
+    @JoinTable(
+            name = "usuario_articulo",  // Nombre de la tabla de unión
+            joinColumns = @JoinColumn(name = "usuario_id"),  // Columna en la tabla de unión que referencia a la entidad Usuario
+            inverseJoinColumns = @JoinColumn(name = "articulo_id")  // Columna en la tabla de unión que referencia a la entidad Articulo
+    )
+    private List<Articulo> articulos = new ArrayList<>();
 
 }

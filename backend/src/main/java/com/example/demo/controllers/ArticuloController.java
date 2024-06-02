@@ -63,4 +63,10 @@ public class ArticuloController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    @PostMapping
+    public ResponseEntity<Void> add(@RequestBody ArticuloClienteDto entity) {
+        articuloService.addMegusta(entity);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
 }
