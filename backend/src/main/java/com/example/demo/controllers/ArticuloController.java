@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
 
+import com.example.demo.entities.DTO.ArticuloClienteDto;
 import com.example.demo.entities.DTO.ArticuloDto;
 import com.example.demo.services.Interfaces.ArticuloService;
 import org.springframework.http.HttpStatus;
