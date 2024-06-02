@@ -6,6 +6,7 @@ import com.example.demo.entities.DTO.UsuarioDtoUser;
 import com.example.demo.entities.Rol;
 import com.example.demo.entities.Usuario;
 import com.example.demo.entities.transformations.Usuario.UsuarioDtoMapper;
+import com.example.demo.repositories.ClienteRepository;
 import com.example.demo.repositories.RolRepository;
 import com.example.demo.repositories.UsuarioRepository;
 import com.example.demo.services.Interfaces.UsuarioService;
@@ -14,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,11 +27,13 @@ public class UsuarioServiceImpl implements UsuarioService {
     private PasswordEncoder passwordEncoder;
 
     private RolRepository rolRepository;
-    public UsuarioServiceImpl(UsuarioRepository usuarioRepository, UsuarioDtoMapper usuarioDtoMapper, PasswordEncoder passwordEncoder, RolRepository rolRepository) {
+    private ClienteRepository   clienteRepository;
+    public UsuarioServiceImpl(UsuarioRepository usuarioRepository, UsuarioDtoMapper usuarioDtoMapper, PasswordEncoder passwordEncoder, RolRepository rolRepository, ClienteRepository clienteRepository) {
         this.usuarioRepository = usuarioRepository;
         this.usuarioDtoMapper = usuarioDtoMapper;
         this.passwordEncoder = passwordEncoder;
         this.rolRepository = rolRepository;
+        this.clienteRepository = clienteRepository;
     }
 
     @Override
@@ -48,7 +50,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuario.setPassword(passwordEncoder.encode(entity.getPassword()));
         usuario.setUsername(entity.getUsername());
         usuario.setGmail(entity.getGmail());
-        usuario.setCliente(entity.getCliente());
+        usuario.setCliente(clienteRepository.getReferenceById(entity.getCliente()));
 
         Rol roles = rolRepository.findByName("USER").get();
         usuario.setRol(roles);
@@ -113,11 +115,13 @@ public class UsuarioServiceImpl implements UsuarioService {
         if(mail_usado) {
             return new ResponseEntity<>("el usuario con ese mail, intenta con otro", HttpStatus.BAD_REQUEST);
         }
+
+
         Usuario usuario = new Usuario();
         usuario.setUsername(entity.getUsername());
         usuario.setPassword(passwordEncoder.encode(entity.getPassword()));
         usuario.setGmail(entity.getGmail());
-        usuario.setCliente(entity.getCliente());
+        usuario.setCliente(clienteRepository.getReferenceById(entity.getCliente()));
         Rol roles = rolRepository.findByName("ADMI").get();
         usuario.setRol(roles);
         usuarioRepository.save(usuario);
