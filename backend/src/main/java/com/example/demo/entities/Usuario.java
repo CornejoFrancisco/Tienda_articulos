@@ -51,4 +51,7 @@ public class Usuario {
     )
     private List<Articulo> articulos = new ArrayList<>();
 
+    @Column(name = "activo")
+    private Boolean activo;
+
 }

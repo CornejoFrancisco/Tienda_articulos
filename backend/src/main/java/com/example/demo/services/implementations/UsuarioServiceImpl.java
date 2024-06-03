@@ -10,11 +10,13 @@ import com.example.demo.repositories.ClienteRepository;
 import com.example.demo.repositories.RolRepository;
 import com.example.demo.repositories.UsuarioRepository;
 import com.example.demo.services.Interfaces.UsuarioService;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,14 +41,12 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public ResponseEntity<String> addUser(UsuarioDtoUser entity) {
 
-        if (findByUsername(entity.getUsername())) {
+        Optional<Usuario> user_gmail = usuarioRepository.findUsuarioByGmail(entity.getGmail());
+        Optional<Usuario> user_username = usuarioRepository.findByUsername(entity.getUsername());
+        if (user_username.isPresent() || user_gmail.isPresent()) {
             return new ResponseEntity<>("el usuario ya existe, intenta con otro", HttpStatus.BAD_REQUEST);
         }
-        boolean mail_usado = verificacion_mail(entity.getGmail());
-        if(mail_usado) {
-            return new ResponseEntity<>("el usuario con ese mail, intenta con otro", HttpStatus.BAD_REQUEST);
-        }
-        Usuario usuario = new Usuario();
+            Usuario usuario = new Usuario();
         usuario.setPassword(passwordEncoder.encode(entity.getPassword()));
         usuario.setUsername(entity.getUsername());
         usuario.setGmail(entity.getGmail());
@@ -89,10 +89,24 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public UsuarioDto delete(Long id) {
-        Optional<Usuario> usuario = usuarioRepository.findById(id);
-        usuario.ifPresent(usuarioRepository :: delete);
-        return usuario.map(usuarioDtoMapper).orElseThrow();
+    public UsuarioDto delete(Long id) throws UserPrincipalNotFoundException {
+        Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
+
+        if (usuarioOptional.isPresent()) {
+            Usuario usuario = usuarioOptional.get();
+            usuario.setUsername(usuarioOptional.get().getUsername());
+            usuario.setPassword(usuarioOptional.get().getPassword());
+            usuario.setGmail(usuarioOptional.get().getGmail());
+            usuario.setUsuario(usuarioOptional.get().getUsuario());
+            usuario.setRol(usuarioOptional.get().getRol());
+            usuario.setArticulos(usuarioOptional.get().getArticulos());
+            usuario.setCliente(usuarioOptional.get().getCliente());
+            usuario.setActivo(false);
+            usuarioRepository.save(usuario);
+            return usuarioDtoMapper.apply(usuario);
+        } else {
+            throw new UserPrincipalNotFoundException("Usuario no encontrado");
+        }
     }
 
     @Override
@@ -108,47 +122,28 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public ResponseEntity<String> addAdmi(UsuarioDtoAdmin entity) {
 
-        if (findByUsername(entity.getUsername())) {
+        Optional<Usuario> user_gmail = usuarioRepository.findUsuarioByGmail(entity.getGmail());
+        Optional<Usuario> user_username = usuarioRepository.findByUsername(entity.getUsername());
+        if (!user_username.isPresent() || !user_gmail.isPresent()) {
+            Usuario usuario = new Usuario();
+            usuario.setUsername(entity.getUsername());
+            usuario.setPassword(passwordEncoder.encode(entity.getPassword()));
+            usuario.setGmail(entity.getGmail());
+            usuario.setCliente(clienteRepository.getReferenceById(entity.getCliente()));
+            Rol roles = rolRepository.findByName("ADMI").get();
+            usuario.setRol(roles);
+            usuarioRepository.save(usuario);
+            return new ResponseEntity<>("El usuario creado", HttpStatus.BAD_REQUEST);
+
+        }else {
             return new ResponseEntity<>("el usuario ya existe, intenta con otro", HttpStatus.BAD_REQUEST);
         }
-        boolean mail_usado = verificacion_mail(entity.getGmail());
-        if(mail_usado) {
-            return new ResponseEntity<>("el usuario con ese mail, intenta con otro", HttpStatus.BAD_REQUEST);
-        }
-
-
-        Usuario usuario = new Usuario();
-        usuario.setUsername(entity.getUsername());
-        usuario.setPassword(passwordEncoder.encode(entity.getPassword()));
-        usuario.setGmail(entity.getGmail());
-        usuario.setCliente(clienteRepository.getReferenceById(entity.getCliente()));
-        Rol roles = rolRepository.findByName("ADMI").get();
-        usuario.setRol(roles);
-        usuarioRepository.save(usuario);
-        return new ResponseEntity<>("El usuario creado", HttpStatus.BAD_REQUEST);
     }
 
 
 
-    public boolean findByUsername(String username) {
-        List<Usuario> list_usuario = usuarioRepository.findAll();
-        boolean usuario = verificacion_usuario(list_usuario, username);
-        return usuario;
-    }
 
 
 
-    private boolean verificacion_usuario(List<Usuario> usuarios, String name) {
-        Usuario usuario_encontrado = new Usuario();
-        boolean encontrardo = false;
-        for(int i = 1; i < usuarios.size(); i ++ ){
-            usuario_encontrado = usuarios.get(i);
-            if(usuario_encontrado.getUsername().equals(name)){
-                encontrardo = true;
-                return encontrardo;
-            }
-        }
-        return encontrardo;
 
-    }
 }

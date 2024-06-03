@@ -22,5 +22,6 @@ public class UsuarioDto {
     private String password;
     private String gmail;
     private Rol rol;
+    private Boolean activo;
 
 }
