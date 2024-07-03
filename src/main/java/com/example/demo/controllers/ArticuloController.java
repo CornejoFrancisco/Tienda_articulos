@@ -1,0 +1,86 @@
+package com.example.demo.controllers;
+
+
+import com.example.demo.entities.DTO.ArticuloClienteDto;
+import com.example.demo.entities.DTO.ArticuloDto;
+import com.example.demo.services.Interfaces.ArticuloService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.nio.file.attribute.UserPrincipalNotFoundException;
+import java.util.List;
+import java.util.NoSuchElementException;
+
+@RestController
+@RequestMapping("/api/articulo")
+public class ArticuloController {
+    private final ArticuloService articuloService;
+
+    public ArticuloController(ArticuloService articuloService) {
+        this.articuloService = articuloService;
+    }
+
+
+    @GetMapping
+    public ResponseEntity<List<ArticuloDto>> getAll() {
+        List<ArticuloDto> values = articuloService.getAll();
+        return ResponseEntity.ok(values);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ArticuloDto> getById(@PathVariable("id") Long id) {
+        try {
+            ArticuloDto value = articuloService.getById(id);
+            return ResponseEntity.ok(value);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+
+    @PostMapping
+    public ResponseEntity<Void> add(@RequestBody ArticuloDto entity) {
+        articuloService.add(entity);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+
+
+
+
+    @PutMapping()
+    public ResponseEntity<ArticuloDto> update(@RequestBody ArticuloDto entity) {
+        articuloService.update(entity);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ArticuloDto> delete(@PathVariable("id") Long id) throws UserPrincipalNotFoundException {
+        articuloService.delete(id);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> add(@RequestBody ArticuloClienteDto entity) {
+        articuloService.addMegusta(entity);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @GetMapping("/categoria/{categoria}")
+    public ResponseEntity<List<ArticuloDto>> getArticulosByCategoria(@PathVariable("categoria") Long categoria) {
+        List<ArticuloDto> values = articuloService.getArticulosByCategoria(categoria);
+        return ResponseEntity.ok(values);
+    }
+
+    @GetMapping("/nombre/{nombre}")
+    public ResponseEntity<List<ArticuloDto>> getArticulosByName(@PathVariable("nombre") String nombre) {
+        List<ArticuloDto> values = articuloService.getArticulosByName(nombre);
+        return ResponseEntity.ok(values);
+    }
+
+}
